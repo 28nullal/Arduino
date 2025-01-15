@@ -33,90 +33,12 @@ void setup() {
   prevButton1 = false;
   Serial.begin(9600);
   while (!scale.begin()) {
-    initPrint1();
-    initPrint2();
+    lcd.print("The initialization of the chip failed, please confirm whether the chip connection is correct");
     delay(1000);
   }
   scale.setCalibration(2236.f);
   scale.peel();
 }
-
-char clearArray[] = " Value Cleared! ";
-int clearPosCount;
-void clearPrint() {
-  lcd.setCursor(15, 0);
-  for (clearPosCount = 0; clearPosCount < 15; clearPosCount++) {
-    lcd.scrollDisplayLeft();
-    lcd.print(clearArray[clearPosCount]);
-    delay(tim);
-  }
-  delay(2000);
-  lcd.clear();
-}
-
-char initArray1[] = "The initialization of the chip failed, please";
-int initPosCount1;
-void initPrint1() {
-  lcd.setCursor(15, 0);
-  for (initPosCount1 = 0; initPosCount1 < 44; initPosCount1++) {
-    lcd.scrollDisplayLeft();
-    lcd.print(initArray1[initPosCount1]);
-    delay(tim);
-  }
-  delay(2000);
-  lcd.clear();
-}
-
-char initArray2[] = "confirm whether the chip connection is correct.";
-int initPosCount2;
-void initPrint2() {
-  lcd.setCursor(15, 1);
-  for (initPosCount2 = 0; initPosCount2 < 46; initPosCount2++) {
-    lcd.scrollDisplayLeft();
-    lcd.print(initArray2[initPosCount2]);
-    delay(tim);
-  }
-  delay(2000);
-  lcd.clear();
-}
-
-char weirdArray[] = "Weird / No Coin ";
-int weirdPosCount;
-void weirdPrint() {
-  lcd.setCursor(15, 0);
-  for (weirdPosCount = 0; weirdPosCount < 16; weirdPosCount++) {
-    lcd.scrollDisplayLeft();
-    lcd.print(weirdArray[weirdPosCount]);
-    delay(tim);
-  }
-  delay(2000);
-  lcd.clear();
-}
-
-char scaleArray[] = "";
-int scalePosCount;
-void scalePrint() {
-  lcd.setCursor(15, 0);
-  for (scalePosCount = 0; scalePosCount < 16; scalePosCount++) {
-    lcd.scrollDisplayLeft();
-    lcd.print(scaleArray[scalePosCount]);
-    delay(tim);
-  }
-  delay(2000);
-  lcd.clear();
-}
-
-char valPenny[] = "";
-int pennyPosCount;
-
-char valNickel[] = "";
-int nickelPosCount;
-
-char valDime[] = "";
-int dimePosCount;
-
-char valQuarter[] = "";
-int quarterPosCount;
 
 // in INPUT_PULLUP mode, if the signal is HIGH
 // then the button is unpressed.
@@ -134,11 +56,10 @@ void checkState() {
   // check button 1.
   currButton1 = isPressed(BUTTON1);
   if (currButton1 == true && prevButton1 == false) {
-    delay(tim);
     scale.peel();
     prevVal = currVal;
     currVal = 0;
-    clearPrint();
+    lcd.print("Value Cleared!");
     prevButton1 = currButton1;
 
   } else if (currButton1 == false && currButton1 != prevButton1) {
@@ -174,13 +95,16 @@ void loop() {
   } else if (currCoin == "dollar") {
     currVal = prevVal + 1;
   } else if (currCoin == "none") {
-    weirdPrint();
+    lcd.print("Weird / No Coin");
   }
-  scalePrint();
+  lcd.print("There is a");
+  lcd.print(currCoin);
+  lcd.print("on the scale");
 
-  Serial.print("You currently have $");
+  lcd.print("Now, you have $");
+  lcd.print(currVal);
+  Serial.print("Now, you have $");
   Serial.print(currVal);
-  Serial.println("!");
   prevVal = currVal;
   currVal = 0;
   delay(5000);
