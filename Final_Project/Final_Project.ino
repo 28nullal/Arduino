@@ -24,26 +24,42 @@ float weight;
 char currCoin;
 float prevVal;
 float currVal;
-LiquidCrystal lcd(4, 6, 10, 11, 12, 13);
+bool loopFlag;
+const int rs = 4, en = 6, d4 = 10, d5 = 11, d6 = 12, d7 = 13;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 void setup() {
+  loopFlag = true;
+  prevButton1 = false;
   scale.begin();
   pinMode(BUTTON1, INPUT_PULLUP);
   lcd.begin(16, 2);
-  prevButton1 = false;
-  Serial.begin(9600);
   while (!scale.begin()) {
     lcd.print("The initialization of the chip failed, please confirm whether the chip connection is correct");
-    delay(1000);
+    delay(3000);
+    lcd.clear();
   }
   scale.setCalibration(2236.f);
   scale.peel();
+  delay(1000);
+  lcd.print("Press button to");
+  delay(3000);
+  lcd.clear();
+  lcd.print("start weighing ");
+  delay(3000);
+  lcd.clear();
+  while (loopFlag) {
+    isPressed(BUTTON1);
+    delay(100);
+  }
+  loopFlag = true;
 }
 
 // in INPUT_PULLUP mode, if the signal is HIGH
 // then the button is unpressed.
 bool isPressed(int pin) {
   if (digitalRead(pin) == LOW) {
+    loopFlag = false;
     return true;
   } else {
     return false;
@@ -60,6 +76,8 @@ void checkState() {
     prevVal = currVal;
     currVal = 0;
     lcd.print("Value Cleared!");
+    delay(3000);
+    lcd.clear();
     prevButton1 = currButton1;
 
   } else if (currButton1 == false && currButton1 != prevButton1) {
@@ -70,41 +88,42 @@ void checkState() {
 void loop() {
   checkState();
   weight = scale.readWeight();
+  delay(1000);
   if (weight >= 2.4 && weight <= 2.6) {
     currCoin = "penny";
+    lcd.print("Penny on scale");
+    currVal = prevVal + 0.01;
+    delay(3000);
+    lcd.clear();
   } else if (weight >= 4.9 && weight <= 5.1) {
     currCoin = "nickel";
+    lcd.print("Nickel on scale");
+    currVal = prevVal + 0.05;
+    delay(3000);
+    lcd.clear();
   } else if (weight >= 2.168 && weight <= 2.368) {
     currCoin = "dime";
+    lcd.print("Dime on scale");
+    currVal = prevVal + 0.10;
+    delay(3000);
+    lcd.clear();
   } else if (weight >= 5.57 && weight <= 5.77) {
     currCoin = "quarter";
+    lcd.print("Quarter on scale");
+    currVal = prevVal + 0.25;
+    delay(3000);
+    lcd.clear();
   } else {
     currCoin = "none";
-  }
-
-  if (currCoin == "penny") {
-    currVal = prevVal + 0.01;
-  } else if (currCoin == "nickel") {
-    currVal = prevVal + 0.05;
-  } else if (currCoin == "dime") {
-    currVal = prevVal + 0.1;
-  } else if (currCoin == "quarter") {
-    currVal = prevVal + 0.25;
-  } else if (currCoin == "half dollar") {
-    currVal = prevVal + 0.5;
-  } else if (currCoin == "dollar") {
-    currVal = prevVal + 1;
-  } else if (currCoin == "none") {
     lcd.print("Weird / No Coin");
+    delay(3000);
+    lcd.clear();
   }
-  lcd.print("There is a");
-  lcd.print(currCoin);
-  lcd.print("on the scale");
 
-  lcd.print("Now, you have $");
+  lcd.print("You have $");
   lcd.print(currVal);
-  Serial.print("Now, you have $");
-  Serial.print(currVal);
+  delay(3000);
+  lcd.clear();
   prevVal = currVal;
   currVal = 0;
   delay(5000);
