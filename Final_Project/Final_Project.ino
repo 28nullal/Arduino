@@ -42,9 +42,9 @@ void setup() {
   scale.setCalibration(2236.f);
   scale.peel();
   delay(1000);
+  lcd.setCursor(0,0);
   lcd.print("Press button to");
-  delay(3000);
-  lcd.clear();
+  lcd.setCursor(0,1);
   lcd.print("start weighing ");
   delay(3000);
   lcd.clear();
@@ -75,6 +75,7 @@ void checkState() {
     scale.peel();
     prevVal = currVal;
     currVal = 0;
+    lcd.setCursor(0,0);
     lcd.print("Value Cleared!");
     delay(3000);
     lcd.clear();
@@ -86,31 +87,65 @@ void checkState() {
 }
 
 void loop() {
+  delay(10000);
   checkState();
   weight = scale.readWeight();
-  delay(1000);
+  lcd.setCursor(0,0);
+  lcd.print("Weight: ");
+  lcd.print(weight);
+  lcd.print("g.");
+  delay(3000);
+  lcd.clear();
   if (weight >= 2.4 && weight <= 2.6) {
     currCoin = "penny";
-    lcd.print("Penny on scale");
+    lcd.setCursor(0,0);
+    lcd.print("A penny is");
+    lcd.setCursor(0,1);
+    lcd.print("on the scale");
     currVal = prevVal + 0.01;
+    delay(3000);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Take coin off");
     delay(3000);
     lcd.clear();
   } else if (weight >= 4.9 && weight <= 5.1) {
     currCoin = "nickel";
-    lcd.print("Nickel on scale");
+    lcd.setCursor(0,0);
+    lcd.print("A nickel is");
+    lcd.setCursor(0,1);
+    lcd.print("on the scale");
     currVal = prevVal + 0.05;
+    delay(3000);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Take coin off");
     delay(3000);
     lcd.clear();
   } else if (weight >= 2.168 && weight <= 2.368) {
     currCoin = "dime";
-    lcd.print("Dime on scale");
+    lcd.setCursor(0,0);
+    lcd.print("A dime is");
+    lcd.setCursor(0,1);
+    lcd.print("on the scale");
     currVal = prevVal + 0.10;
+    delay(3000);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Take coin off");
     delay(3000);
     lcd.clear();
   } else if (weight >= 5.57 && weight <= 5.77) {
     currCoin = "quarter";
-    lcd.print("Quarter on scale");
+    lcd.setCursor(0,0);
+    lcd.print("A quarter is");
+    lcd.setCursor(0,1);
+    lcd.print("on the scale");
     currVal = prevVal + 0.25;
+    delay(3000);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Take coin off");
     delay(3000);
     lcd.clear();
   } else {
@@ -120,11 +155,11 @@ void loop() {
     lcd.clear();
   }
 
+  lcd.setCursor(0,0);
   lcd.print("You have $");
   lcd.print(currVal);
   delay(3000);
   lcd.clear();
   prevVal = currVal;
   currVal = 0;
-  delay(5000);
 }
