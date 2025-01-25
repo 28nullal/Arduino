@@ -12,7 +12,6 @@
  * @param pWire I2c controller
  * @param addr  I2C address(0x64/0x65/0x660x67)
  */
-//DFRobot_HX711_I2C scale(&Wire,/*addr=*/0x64);
 #include <LiquidCrystal.h>
 #include <DFRobot_HX711_I2C.h>
 #define BUTTON1 7
@@ -55,8 +54,6 @@ void setup() {
   loopFlag = true;
 }
 
-// in INPUT_PULLUP mode, if the signal is HIGH
-// then the button is unpressed.
 bool isPressed(int pin) {
   if (digitalRead(pin) == LOW) {
     loopFlag = false;
@@ -66,10 +63,7 @@ bool isPressed(int pin) {
   }
 }
 
-// this method checks the system to see
-// if its state should change.
 void checkState() {
-  // check button 1.
   currButton1 = isPressed(BUTTON1);
   if (currButton1 == true && prevButton1 == false) {
     scale.peel();
