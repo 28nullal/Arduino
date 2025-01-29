@@ -63,8 +63,9 @@ bool isPressed(int pin) {
   }
 }
 
-void checkState() {
-  currButton1 = isPressed(BUTTON1);
+void loop() {
+  delay(5000);
+    currButton1 = isPressed(BUTTON1);
   if (currButton1 == true && prevButton1 == false) {
     scale.peel();
     prevVal = currVal;
@@ -78,11 +79,6 @@ void checkState() {
   } else if (currButton1 == false && currButton1 != prevButton1) {
     prevButton1 = currButton1;
   }
-}
-
-void loop() {
-  delay(10000);
-  checkState();
   weight = scale.readWeight();
   lcd.setCursor(0,0);
   lcd.print("Weight: ");
@@ -93,9 +89,9 @@ void loop() {
   if (weight >= 2.4 && weight <= 2.6) {
     currCoin = "penny";
     lcd.setCursor(0,0);
-    lcd.print("A penny is");
+    lcd.print("A penny is on");
     lcd.setCursor(0,1);
-    lcd.print("on the scale");
+    lcd.print("the scale");
     currVal = prevVal + 0.01;
     delay(3000);
     lcd.clear();
@@ -106,9 +102,9 @@ void loop() {
   } else if (weight >= 4.9 && weight <= 5.1) {
     currCoin = "nickel";
     lcd.setCursor(0,0);
-    lcd.print("A nickel is");
+    lcd.print("A nickel is on");
     lcd.setCursor(0,1);
-    lcd.print("on the scale");
+    lcd.print("the scale");
     currVal = prevVal + 0.05;
     delay(3000);
     lcd.clear();
@@ -119,9 +115,9 @@ void loop() {
   } else if (weight >= 2.168 && weight <= 2.368) {
     currCoin = "dime";
     lcd.setCursor(0,0);
-    lcd.print("A dime is");
+    lcd.print("A dime is on");
     lcd.setCursor(0,1);
-    lcd.print("on the scale");
+    lcd.print("the scale");
     currVal = prevVal + 0.10;
     delay(3000);
     lcd.clear();
@@ -132,9 +128,9 @@ void loop() {
   } else if (weight >= 5.57 && weight <= 5.77) {
     currCoin = "quarter";
     lcd.setCursor(0,0);
-    lcd.print("A quarter is");
+    lcd.print("A quarter is on");
     lcd.setCursor(0,1);
-    lcd.print("on the scale");
+    lcd.print("the scale");
     currVal = prevVal + 0.25;
     delay(3000);
     lcd.clear();
@@ -145,6 +141,7 @@ void loop() {
   } else {
     currCoin = "none";
     lcd.print("Weird / No Coin");
+    currVal = prevVal + 0;
     delay(3000);
     lcd.clear();
   }
