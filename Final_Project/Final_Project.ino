@@ -38,9 +38,13 @@ void setup() {
     delay(3000);
     lcd.clear();
   }
-  scale.setCalibration(2236.f);
+  scale.setCalWeight(271);
   scale.peel();
-  delay(1000);
+  lcd.setCursor(0,0);
+  lcd.print("Calibration");
+  lcd.setCursor(0,1);
+  lcd.print("Completed!");
+  delay(3000);
   lcd.setCursor(0,0);
   lcd.print("Press button to");
   lcd.setCursor(0,1);
@@ -52,6 +56,9 @@ void setup() {
     delay(100);
   }
   loopFlag = true;
+  lcd.print("Weighing Started");
+  delay(1000);
+  lcd.clear();
 }
 
 bool isPressed(int pin) {
@@ -64,7 +71,7 @@ bool isPressed(int pin) {
 }
 
 void loop() {
-  delay(5000);
+  delay(3000);
     currButton1 = isPressed(BUTTON1);
   if (currButton1 == true && prevButton1 == false) {
     scale.peel();
@@ -80,13 +87,14 @@ void loop() {
     prevButton1 = currButton1;
   }
   weight = scale.readWeight();
+  weight = weight + 274.8;
   lcd.setCursor(0,0);
   lcd.print("Weight: ");
   lcd.print(weight);
   lcd.print("g.");
   delay(3000);
   lcd.clear();
-  if (weight >= 2.4 && weight <= 2.6) {
+  if (weight >= 2.385 && weight <= 2.65) {
     currCoin = "penny";
     lcd.setCursor(0,0);
     lcd.print("A penny is on");
@@ -99,7 +107,7 @@ void loop() {
     lcd.print("Take coin off");
     delay(3000);
     lcd.clear();
-  } else if (weight >= 4.9 && weight <= 5.1) {
+  } else if (weight >= 4.85 && weight <= 5.15) {
     currCoin = "nickel";
     lcd.setCursor(0,0);
     lcd.print("A nickel is on");
@@ -112,7 +120,7 @@ void loop() {
     lcd.print("Take coin off");
     delay(3000);
     lcd.clear();
-  } else if (weight >= 2.168 && weight <= 2.368) {
+  } else if (weight >= 2.118 && weight <= 2.384) {
     currCoin = "dime";
     lcd.setCursor(0,0);
     lcd.print("A dime is on");
@@ -125,7 +133,7 @@ void loop() {
     lcd.print("Take coin off");
     delay(3000);
     lcd.clear();
-  } else if (weight >= 5.57 && weight <= 5.77) {
+  } else if (weight >= 5.52 && weight <= 5.82) {
     currCoin = "quarter";
     lcd.setCursor(0,0);
     lcd.print("A quarter is on");
