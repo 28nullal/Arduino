@@ -41,7 +41,6 @@ void setup() {
     delay(3000);
     lcd.clear();
   }
-  //calibration();
   scale.setCalibration(2024.5);
   lcd.setCursor(0,0);
   lcd.print("Calibration");
@@ -73,41 +72,6 @@ bool isPressed(int pin) {
   }
 }
 
-/*
-void calibration() {
-  scale.setCalWeight(300);
-  scale.setThreshold(10);  
-
-  lcd.setCursor(0,0);
-  lcd.print("Put 300g weight");
-  lcd.setCursor(0,1);
-  lcd.print("on scale in 5s");
-  scale.enableCal();
-  delay(3000);
-  lcd.clear();
-  long time1 = millis();
-  while(!scale.getCalFlag()){
-       delay(1000);
-       if((millis()-time1) > 7000){ 
-          lcd.setCursor(0,0);
-          lcd.print("Calibration");
-          lcd.setCursor(0,1);
-          lcd.print("Failed!");
-          delay(3000);
-          lcd.clear();
-          break;
-       }
-  }
-  lcd.setCursor(0,0);
-  lcd.print("The calibration");
-  lcd.setCursor(0,1);
-  lcd.print("value is ");
-  lcd.print(scale.getCalibration());
-  delay(3000);
-  lcd.clear();
-  scale.setCalibration(scale.getCalibration());
-}
-*/
 void loop() {
   lcd.setCursor(0,0);
   lcd.print("Press button");
