@@ -34,12 +34,15 @@ void setup() {
   pinMode(BUTTON1, INPUT_PULLUP);
   lcd.begin(16, 2);
   while (!scale.begin()) {
-    lcd.print("The initialization of the chip failed, please confirm whether the chip connection is correct");
+    lcd.setCursor(0,0);
+    lcd.print("Initialization");
+    lcd.setCursor(0,1);
+    lcd.print("Failed");
     delay(3000);
     lcd.clear();
   }
-  scale.setCalWeight(271);
-  scale.peel();
+  //calibration();
+  scale.setCalibration(2024.5);
   lcd.setCursor(0,0);
   lcd.print("Calibration");
   lcd.setCursor(0,1);
@@ -70,9 +73,49 @@ bool isPressed(int pin) {
   }
 }
 
-void loop() {
+/*
+void calibration() {
+  scale.setCalWeight(300);
+  scale.setThreshold(10);  
+
+  lcd.setCursor(0,0);
+  lcd.print("Put 300g weight");
+  lcd.setCursor(0,1);
+  lcd.print("on scale in 5s");
+  scale.enableCal();
   delay(3000);
-    currButton1 = isPressed(BUTTON1);
+  lcd.clear();
+  long time1 = millis();
+  while(!scale.getCalFlag()){
+       delay(1000);
+       if((millis()-time1) > 7000){ 
+          lcd.setCursor(0,0);
+          lcd.print("Calibration");
+          lcd.setCursor(0,1);
+          lcd.print("Failed!");
+          delay(3000);
+          lcd.clear();
+          break;
+       }
+  }
+  lcd.setCursor(0,0);
+  lcd.print("The calibration");
+  lcd.setCursor(0,1);
+  lcd.print("value is ");
+  lcd.print(scale.getCalibration());
+  delay(3000);
+  lcd.clear();
+  scale.setCalibration(scale.getCalibration());
+}
+*/
+void loop() {
+  lcd.setCursor(0,0);
+  lcd.print("Press button");
+  lcd.setCursor(0,1);
+  lcd.print("to clear balance");
+  delay(3000);
+  lcd.clear();
+  currButton1 = isPressed(BUTTON1);
   if (currButton1 == true && prevButton1 == false) {
     scale.peel();
     prevVal = currVal;
@@ -87,7 +130,7 @@ void loop() {
     prevButton1 = currButton1;
   }
   weight = scale.readWeight();
-  weight = weight + 274.8;
+  weight = weight,1;
   lcd.setCursor(0,0);
   lcd.print("Weight: ");
   lcd.print(weight);
