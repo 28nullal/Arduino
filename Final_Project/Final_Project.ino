@@ -79,6 +79,7 @@ void loop() {
   lcd.print("to clear balance");
   delay(3000);
   lcd.clear();
+  delay(3000);
   currButton1 = isPressed(BUTTON1);
   if (currButton1 == true && prevButton1 == false) {
     scale.peel();
